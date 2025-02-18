@@ -1,4 +1,5 @@
 import React, { ReactNode, useState } from "react";
+import { QuizResponse } from "../../../models/quizResponse";
 
 type UserResponsesContextType = {
   userResponses: QuizResponse[];

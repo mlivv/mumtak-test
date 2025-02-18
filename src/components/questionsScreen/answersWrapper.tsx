@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import AnswerButton from "./answerButton";
+import { QuizQuestion } from "../../models/quizQuestion";
+import { QuizResponse } from "../../models/quizResponse";
 
 interface AnswersWrapperProps {
   handleAnswerSelection: (value: string) => void;
