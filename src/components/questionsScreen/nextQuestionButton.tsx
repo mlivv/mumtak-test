@@ -1,5 +1,6 @@
 import { Pressable, StyleSheet, Text } from "react-native";
 import { globalStyles } from "../../../globalStyles";
+import { QuizResponse } from "../../models/quizResponse";
 
 interface NextQuestionButton {
   handleQuizResponse: (quizAnswer: QuizResponse) => void;

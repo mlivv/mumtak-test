@@ -2,11 +2,12 @@ import { StackActions, useNavigation } from "@react-navigation/native";
 import { useContext, useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { globalStyles } from "../../../globalStyles";
+import { QuizResponse } from "../../models/quizResponse";
 import { questionsFetch as getQuestions } from "../api/questions/questionsFetch";
+import { UserResponsesContext } from "../context/userResponsesContext/userResponsesContext";
 import NextQuestionButton from "./nextQuestionButton";
 import QuestionCard from "./questionCard";
 import QuestionCount from "./questionCount";
-import { UserResponsesContext } from "../context/userResponsesContext/userResponsesContext";
 
 interface QuestionWrapperProps {
   questionIndex: number;
@@ -25,14 +26,13 @@ export default function QuestionsWrapper({
 
   const [currentResponse, setCurrentResponse] = useState<QuizResponse>();
   const [quizResponses, setQuizResponses] = useState<QuizResponse[]>([]);
-  const { userResponses, setUserResponses } = useContext(UserResponsesContext);
+  const { setUserResponses } = useContext(UserResponsesContext);
 
   useEffect(() => {
     setCurrentResponse(undefined);
   }, [questionIndex]);
 
   function handleQuizResponse(quizAnswer: QuizResponse) {
-    //  TODO elimina quizresponses
     setQuizResponses([...quizResponses, quizAnswer]);
     setUserResponses([...quizResponses, quizAnswer]);
   }

@@ -29,16 +29,3 @@ export default function QuestionsPage() {
     </View>
   );
 }
-
-// TODO: Implement a warning alert when the user tries to go back
-//   useFocusEffect(() => {
-//     const navigationAlert = navigation.addListener("blur", (e) => {
-//       e.preventDefault();
-//       Alert.alert(
-//         "If you go back now, you will lose all your progress. Are you sure you want to go back?"
-//         // [{ text: "OK", style: "cancel" }]
-//       );
-//     });
-
-//     return navigationAlert;
-//   });

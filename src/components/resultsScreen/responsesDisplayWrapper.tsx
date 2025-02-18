@@ -17,7 +17,11 @@ export default function ResponsesDisplayWrapper({
         contentContainerStyle={styles.contentContainer}
       >
         {responses
-          .sort((a, b) => a.selectedAnswer.localeCompare(b.selectedAnswer))
+          .sort((a, b) => {
+            const answerA = a.selectedAnswer ?? "";
+            const answerB = b.selectedAnswer ?? "";
+            return answerA.localeCompare(answerB);
+          })
           .map((response, index) => (
             <View
               key={index}
