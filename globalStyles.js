@@ -25,7 +25,6 @@ export const globalStyles = StyleSheet.create({
   quizAnswerButton: {
     padding: 20,
     borderColor: "#423957",
-    backgroundColor: "#332C44",
     borderRadius: 10,
     minWidth: "100%",
   },

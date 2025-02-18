@@ -1,30 +1,32 @@
+import { decode } from "html-entities";
 import { Pressable, StyleSheet, Text } from "react-native";
 import { globalStyles } from "../../../globalStyles";
-import { decode } from "html-entities";
 
 interface AnswerButtonProps {
-  answer: string;
-  handleSelectedAnswer: (value: string) => void;
+  option: string;
+  handleAnswerSelection: (value: string) => void;
+  selected: boolean;
 }
 
 export default function AnswerButton({
-  answer,
-  handleSelectedAnswer,
+  option,
+  handleAnswerSelection,
+  selected,
 }: AnswerButtonProps) {
   return (
     <Pressable
-      style={[globalStyles.quizAnswerButton, styles.button]}
-      onPress={() => handleSelectedAnswer(answer)}
+      style={[
+        globalStyles.quizAnswerButton,
+        { backgroundColor: selected ? "#A196BC" : "#332C44" },
+      ]}
+      onPress={() => handleAnswerSelection(option)}
     >
-      <Text style={[globalStyles.text, styles.text]}>{decode(answer)}</Text>
+      <Text style={[globalStyles.text, styles.text]}>{decode(option)}</Text>
     </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
-  button: {
-    // minWidth: "100%",
-  },
   text: {
     textAlign: "center",
   },

@@ -5,11 +5,13 @@ import { globalStyles } from "../../../globalStyles";
 interface TimerProps {
   moveToNextQuestion: () => void;
   resetTimerTrigger: number;
+  setHasTimerEnded: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function Timer({
   moveToNextQuestion,
   resetTimerTrigger,
+  setHasTimerEnded,
 }: TimerProps) {
   const [timer, setTimer] = useState(15);
 
@@ -19,6 +21,7 @@ export default function Timer({
 
   useEffect(() => {
     if (timer === 0) {
+      setHasTimerEnded(true);
       moveToNextQuestion();
       return;
     }
@@ -28,7 +31,7 @@ export default function Timer({
     }, 1000);
 
     return () => clearTimeout(timeout);
-  }, [timer, moveToNextQuestion]);
+  }, [timer]);
 
   return (
     <View style={styles.background}>

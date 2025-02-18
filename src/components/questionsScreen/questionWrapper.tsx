@@ -1,33 +1,37 @@
-import { useEffect, useState } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
-import { questionsFetch as getQuestions } from "../api/questions/questionsFetch";
-import QuestionCard from "./questionCard";
-import { globalStyles } from "../../../globalStyles";
 import { useNavigation } from "@react-navigation/native";
-import QuestionCount from "./questionCount";
+import { useEffect, useState } from "react";
+import { StyleSheet, Text, View } from "react-native";
+import { globalStyles } from "../../../globalStyles";
+import { questionsFetch as getQuestions } from "../api/questions/questionsFetch";
 import NextQuestionButton from "./nextQuestionButton";
+import QuestionCard from "./questionCard";
+import QuestionCount from "./questionCount";
 
 interface QuestionWrapperProps {
   questionIndex: number;
   moveToNextQuestion: () => void;
+  hasTimerEnded: boolean;
 }
 
 export default function QuestionsWrapper({
   questionIndex,
-  moveToNextQuestion
+  moveToNextQuestion,
+  hasTimerEnded,
 }: QuestionWrapperProps) {
   const navigation = useNavigation();
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const [selectedAnswer, setSelectedAnswer] = useState<quizAnswer>();
-  const [quizAnswers, setQuizAnswers] = useState<quizAnswer[]>([]);
+  const [currentResponse, setCurrentResponse] = useState<QuizResponse>();
+  const [quizResponses, setQuizResponses] = useState<QuizResponse[]>([]);
 
-  function handleQuizAnswers(quizAnswer: quizAnswer) {
-    setQuizAnswers([...quizAnswers, quizAnswer]);
+  useEffect(() => {
+    setCurrentResponse(undefined);
+  }, [questionIndex]);
+
+  function handleQuizResponse(quizAnswer: QuizResponse) {
+    setQuizResponses([...quizResponses, quizAnswer]);
   }
-
-  // function moveToNextQuestion() {}
 
   useEffect(() => {
     async function fetchData() {
@@ -65,12 +69,15 @@ export default function QuestionsWrapper({
       />
       <QuestionCard
         currentQuestion={questions[questionIndex]}
-        setSelectedAnswer={setSelectedAnswer}
+        setCurrentResponse={setCurrentResponse}
+        hasTimerEnded={hasTimerEnded}
+        currentResponse={currentResponse}
       />
       <NextQuestionButton
+        disabled={currentResponse === undefined}
         moveToNextQuestion={moveToNextQuestion}
-        handleQuizAnswers={handleQuizAnswers}
-        selectedAnswer={selectedAnswer}
+        handleQuizResponse={handleQuizResponse}
+        selectedAnswer={currentResponse}
       />
     </View>
   );

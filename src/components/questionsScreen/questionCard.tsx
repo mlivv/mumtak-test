@@ -1,63 +1,40 @@
 import { decode } from "html-entities";
 import { StyleSheet, Text, View } from "react-native";
 import { globalStyles } from "../../../globalStyles";
-import { useEffect, useState } from "react";
-import AnswerButton from "./answerButton";
+import AnswersWrapper from "./answersWrapper";
 
 interface QuestionCardProps {
-  currentQuestion: {
-    type: string;
-    difficulty: string;
-    category: string;
-    question: string;
-    correct_answer: string;
-    incorrect_answers: string[];
-  };
-  setSelectedAnswer: React.Dispatch<React.SetStateAction<quizAnswer>>;
+  currentQuestion: QuizQuestion;
+  setCurrentResponse: React.Dispatch<React.SetStateAction<QuizResponse>>;
+  hasTimerEnded: boolean;
+  currentResponse: QuizResponse;
 }
 
 export default function QuestionCard({
   currentQuestion,
-  setSelectedAnswer,
+  setCurrentResponse,
+  hasTimerEnded,
+  currentResponse,
 }: QuestionCardProps) {
-  const [answers, setAnswers] = useState<string[]>([]);
-
-  function handleSelectedAnswer(value: string) {
-    const selected: quizAnswer = {
+  function handleAnswerSelection(value: string) {
+    const answer = hasTimerEnded ? null : value;
+    setCurrentResponse({
       question: currentQuestion.question,
-      selectedAnswer: value,
+      selectedAnswer: answer,
       correctAnswer: currentQuestion.correct_answer,
-    };
-
-    setSelectedAnswer(selected);
+    });
   }
-
-  // answers will be in random orders
-  useEffect(() => {
-    function randomAnswers() {
-      const randomIndex = Math.floor(Math.random() * 4);
-      const newAnswers = [...currentQuestion.incorrect_answers];
-      newAnswers.splice(randomIndex, 0, currentQuestion.correct_answer);
-      setAnswers(newAnswers);
-    }
-
-    randomAnswers();
-  }, [currentQuestion.incorrect_answers, currentQuestion.correct_answer]);
 
   return (
     <View style={styles.container}>
       <Text style={[globalStyles.text, styles.text]}>
         {decode(currentQuestion.question)}
       </Text>
-      <View style={styles.answersContainer}>
-        {answers.map((answer, index) => (
-          <AnswerButton
-            answer={answer}
-            handleSelectedAnswer={handleSelectedAnswer}
-            key={index}
-          />
-        ))}
-      </View>
+      <AnswersWrapper
+        currentResponse={currentResponse}
+        currentQuestion={currentQuestion}
+        handleAnswerSelection={handleAnswerSelection}
+      />
     </View>
   );
 }
@@ -73,8 +50,5 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "column",
     gap: 30,
-  },
-  answersContainer: {
-    gap: 15,
   },
 });

@@ -2,21 +2,24 @@ import { Pressable, StyleSheet, Text } from "react-native";
 import { globalStyles } from "../../../globalStyles";
 
 interface NextQuestionButton {
-  handleQuizAnswers: (quizAnswer: quizAnswer) => void;
-  selectedAnswer: quizAnswer;
+  handleQuizResponse: (quizAnswer: QuizResponse) => void;
+  selectedAnswer: QuizResponse;
   moveToNextQuestion: () => void;
+  disabled: boolean;
 }
 
 export default function NextQuestionButton({
-  handleQuizAnswers,
+  handleQuizResponse,
   selectedAnswer,
   moveToNextQuestion,
+  disabled,
 }: NextQuestionButton) {
   return (
     <Pressable
       style={[globalStyles.button, styles.button]}
+      disabled={disabled}
       onPress={() => {
-        handleQuizAnswers(selectedAnswer);
+        handleQuizResponse(selectedAnswer);
         moveToNextQuestion();
       }}
     >
