@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import AnswerButton from "./answerButton";
 
 interface QuestionCardProps {
-  question: {
+  currentQuestion: {
     type: string;
     difficulty: string;
     category: string;
@@ -13,30 +13,49 @@ interface QuestionCardProps {
     correct_answer: string;
     incorrect_answers: string[];
   };
+  setSelectedAnswer: React.Dispatch<React.SetStateAction<quizAnswer>>;
 }
 
-export default function QuestionCard({ question }: QuestionCardProps) {
+export default function QuestionCard({
+  currentQuestion,
+  setSelectedAnswer,
+}: QuestionCardProps) {
   const [answers, setAnswers] = useState<string[]>([]);
 
+  function handleSelectedAnswer(value: string) {
+    const selected: quizAnswer = {
+      question: currentQuestion.question,
+      selectedAnswer: value,
+      correctAnswer: currentQuestion.correct_answer,
+    };
+
+    setSelectedAnswer(selected);
+  }
+
+  // answers will be in random orders
   useEffect(() => {
     function randomAnswers() {
       const randomIndex = Math.floor(Math.random() * 4);
-      const newAnswers = [...question.incorrect_answers];
-      newAnswers.splice(randomIndex, 0, question.correct_answer);
+      const newAnswers = [...currentQuestion.incorrect_answers];
+      newAnswers.splice(randomIndex, 0, currentQuestion.correct_answer);
       setAnswers(newAnswers);
     }
 
     randomAnswers();
-  }, [question.incorrect_answers, question.correct_answer]);
+  }, [currentQuestion.incorrect_answers, currentQuestion.correct_answer]);
 
   return (
     <View style={styles.container}>
       <Text style={[globalStyles.text, styles.text]}>
-        {decode(question.question)}
+        {decode(currentQuestion.question)}
       </Text>
       <View style={styles.answersContainer}>
         {answers.map((answer, index) => (
-          <AnswerButton answer={answer} key={index} />
+          <AnswerButton
+            answer={answer}
+            handleSelectedAnswer={handleSelectedAnswer}
+            key={index}
+          />
         ))}
       </View>
     </View>

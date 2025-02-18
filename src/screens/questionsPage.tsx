@@ -5,17 +5,24 @@ import QuestionsWrapper from "../components/questionsScreen/questionWrapper";
 import Timer from "../components/questionsScreen/timer";
 
 export default function QuestionsPage() {
-  console.log("QuestionsPage 1");
   const [questionIndex, setQuestionIndex] = useState(0);
+  const [resetTimerTrigger, setResetTimerTrigger] = useState(0);
 
-  function handleQuestionIndex() {
+  function moveToNextQuestion() {
     setQuestionIndex(questionIndex + 1);
+    setResetTimerTrigger(resetTimerTrigger + 1);
   }
 
   return (
     <View style={globalStyles.container}>
-      <Timer handleQuestionIndex={handleQuestionIndex} />
-      <QuestionsWrapper questionIndex={questionIndex} />
+      <Timer
+        moveToNextQuestion={moveToNextQuestion}
+        resetTimerTrigger={resetTimerTrigger}
+      />
+      <QuestionsWrapper
+        questionIndex={questionIndex}
+        moveToNextQuestion={moveToNextQuestion}
+      />
     </View>
   );
 }

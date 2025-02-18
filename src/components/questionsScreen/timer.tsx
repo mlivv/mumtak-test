@@ -3,22 +3,32 @@ import { StyleSheet, Text, View } from "react-native";
 import { globalStyles } from "../../../globalStyles";
 
 interface TimerProps {
-  handleQuestionIndex: () => void;
+  moveToNextQuestion: () => void;
+  resetTimerTrigger: number;
 }
 
-export default function Timer({ handleQuestionIndex }: TimerProps) {
+export default function Timer({
+  moveToNextQuestion,
+  resetTimerTrigger,
+}: TimerProps) {
   const [timer, setTimer] = useState(15);
 
   useEffect(() => {
-    setTimeout(() => {
-      if (timer === 0) {
-        setTimer(15);
-        handleQuestionIndex();
-      } else {
-        setTimer(timer - 1);
-      }
+    setTimer(15);
+  }, [resetTimerTrigger]);
+
+  useEffect(() => {
+    if (timer === 0) {
+      moveToNextQuestion();
+      return;
+    }
+
+    const timeout = setTimeout(() => {
+      setTimer((prev) => prev - 1);
     }, 1000);
-  });
+
+    return () => clearTimeout(timeout);
+  }, [timer, moveToNextQuestion]);
 
   return (
     <View style={styles.background}>

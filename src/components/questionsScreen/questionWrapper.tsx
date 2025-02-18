@@ -4,27 +4,37 @@ import { questionsFetch as getQuestions } from "../api/questions/questionsFetch"
 import QuestionCard from "./questionCard";
 import { globalStyles } from "../../../globalStyles";
 import { useNavigation } from "@react-navigation/native";
+import QuestionCount from "./questionCount";
+import NextQuestionButton from "./nextQuestionButton";
 
 interface QuestionWrapperProps {
   questionIndex: number;
+  moveToNextQuestion: () => void;
 }
 
 export default function QuestionsWrapper({
   questionIndex,
+  moveToNextQuestion
 }: QuestionWrapperProps) {
   const navigation = useNavigation();
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    console.log("QuestionsPage");
+  const [selectedAnswer, setSelectedAnswer] = useState<quizAnswer>();
+  const [quizAnswers, setQuizAnswers] = useState<quizAnswer[]>([]);
 
+  function handleQuizAnswers(quizAnswer: quizAnswer) {
+    setQuizAnswers([...quizAnswers, quizAnswer]);
+  }
+
+  // function moveToNextQuestion() {}
+
+  useEffect(() => {
     async function fetchData() {
       try {
         const data = await getQuestions();
         setQuestions(data.results);
         setLoading(false);
-        console.log(data.results);
       } catch (error) {
         console.error(error);
         setLoading(false);
@@ -49,13 +59,19 @@ export default function QuestionsWrapper({
 
   return (
     <View style={styles.container}>
-      <Text style={[globalStyles.text, styles.questionIndexText]}>{`Question ${
-        questionIndex + 1
-      }/${questions.length}`}</Text>
-      <QuestionCard question={questions[questionIndex]} />
-      <Pressable style={[globalStyles.button, styles.button]}>
-        <Text style={globalStyles.buttonText}>Next</Text>
-      </Pressable>
+      <QuestionCount
+        currentQuestionIndex={questionIndex}
+        totalQuestions={questions.length}
+      />
+      <QuestionCard
+        currentQuestion={questions[questionIndex]}
+        setSelectedAnswer={setSelectedAnswer}
+      />
+      <NextQuestionButton
+        moveToNextQuestion={moveToNextQuestion}
+        handleQuizAnswers={handleQuizAnswers}
+        selectedAnswer={selectedAnswer}
+      />
     </View>
   );
 }
@@ -66,15 +82,5 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     flexGrow: 1,
-  },
-  button: {
-    position: "absolute",
-    bottom: 0,
-  },
-  questionIndexText: {
-    textAlign: "center",
-    fontWeight: "bold",
-    color: "#554972",
-    paddingTop: 30,
   },
 });
