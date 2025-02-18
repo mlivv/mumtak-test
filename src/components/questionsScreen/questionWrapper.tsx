@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import { questionsFetch as getQuestions } from "../api/questions/questionsFetch";
 import QuestionCard from "./questionCard";
 import { globalStyles } from "../../../globalStyles";
+import { useNavigation } from "@react-navigation/native";
 
 interface QuestionWrapperProps {
   questionIndex: number;
@@ -11,6 +12,7 @@ interface QuestionWrapperProps {
 export default function QuestionsWrapper({
   questionIndex,
 }: QuestionWrapperProps) {
+  const navigation = useNavigation();
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -23,7 +25,6 @@ export default function QuestionsWrapper({
         setQuestions(data.results);
         setLoading(false);
         console.log(data.results);
-        // console.log(data[questionIndex]);
       } catch (error) {
         console.error(error);
         setLoading(false);
@@ -35,18 +36,45 @@ export default function QuestionsWrapper({
 
   if (loading) {
     return (
-      <View>
-        <Text>Loading...</Text>
+      <View style={globalStyles.container}>
+        <Text style={globalStyles.text}>Loading...</Text>
       </View>
     );
   }
 
+  if (questionIndex === questions.length) {
+    navigation.navigate("ResultsPage" as never);
+    return null;
+  }
+
   return (
-    <View>
-      <Text style={globalStyles.text}>{`Question ${questionIndex + 1}/${
-        questions.length
-      }`}</Text>
+    <View style={styles.container}>
+      <Text style={[globalStyles.text, styles.questionIndexText]}>{`Question ${
+        questionIndex + 1
+      }/${questions.length}`}</Text>
       <QuestionCard question={questions[questionIndex]} />
+      <Pressable style={[globalStyles.button, styles.button]}>
+        <Text style={globalStyles.buttonText}>Next</Text>
+      </Pressable>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    position: "relative",
+    display: "flex",
+    flexDirection: "column",
+    flexGrow: 1,
+  },
+  button: {
+    position: "absolute",
+    bottom: 0,
+  },
+  questionIndexText: {
+    textAlign: "center",
+    fontWeight: "bold",
+    color: "#554972",
+    paddingTop: 30,
+  },
+});

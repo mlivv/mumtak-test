@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Text } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { globalStyles } from "../../../globalStyles";
 
 interface TimerProps {
@@ -8,8 +8,6 @@ interface TimerProps {
 
 export default function Timer({ handleQuestionIndex }: TimerProps) {
   const [timer, setTimer] = useState(15);
-
-  // TODO funzione di callback per settare l'indice della domanda corrente allo scadere dei 15 secondi
 
   useEffect(() => {
     setTimeout(() => {
@@ -22,5 +20,34 @@ export default function Timer({ handleQuestionIndex }: TimerProps) {
     }, 1000);
   });
 
-  return <Text style={globalStyles.text}>{timer}</Text>;
+  return (
+    <View style={styles.background}>
+      <View
+        style={[styles.timerBar, { width: `${(timer / 15) * 100}%` }]}
+      ></View>
+      <Text style={[globalStyles.text, styles.text]}>{timer}</Text>
+    </View>
+  );
 }
+
+const styles = StyleSheet.create({
+  background: {
+    backgroundColor: "#251B3E",
+    minWidth: "100%",
+    position: "relative",
+    height: 40,
+    borderRadius: 15,
+    display: "flex",
+    justifyContent: "center",
+  },
+  timerBar: {
+    backgroundColor: "#362561",
+    position: "absolute",
+    height: 40,
+    borderRadius: 15,
+  },
+  text: {
+    position: "absolute",
+    left: 15,
+  },
+});

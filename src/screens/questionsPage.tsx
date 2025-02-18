@@ -1,4 +1,4 @@
-import { Suspense, useState } from "react";
+import { useState } from "react";
 import { Text, View } from "react-native";
 import { globalStyles } from "../../globalStyles";
 import QuestionsWrapper from "../components/questionsScreen/questionWrapper";
@@ -15,10 +15,7 @@ export default function QuestionsPage() {
   return (
     <View style={globalStyles.container}>
       <Timer handleQuestionIndex={handleQuestionIndex} />
-      <Text style={globalStyles.text}>Questions Page</Text>
-      {/* <Suspense fallback={<Text style={globalStyles.text}>Loading...</Text>}> */}
       <QuestionsWrapper questionIndex={questionIndex} />
-      {/* </Suspense> */}
     </View>
   );
 }

@@ -5,6 +5,9 @@ import { globalStyles } from "../../globalStyles";
 export default function Home() {
   const navigation = useNavigation();
 
+  // TODO leggere meglio la documentazione (https://reactnavigation.org/docs/6.x/typescript) perche 
+  // quel cast "as never" non mi piace
+
   return (
     <View style={[globalStyles.container, styles.container]}>
       <Text style={[globalStyles.text, styles.title]}>Hello</Text>
@@ -13,7 +16,7 @@ export default function Home() {
       </Text>
       <Pressable
         style={[globalStyles.button, styles.button]}
-        onPress={() => navigation.navigate("QuestionsPage")}
+        onPress={() => navigation.navigate("QuestionsPage" as never)}
       >
         <Text style={globalStyles.buttonText}>Start quiz</Text>
       </Pressable>
