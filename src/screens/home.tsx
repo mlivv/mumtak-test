@@ -13,7 +13,7 @@ export default function Home() {
       </Text>
       <Pressable
         style={[globalStyles.button, styles.button]}
-        onPress={() => navigation.navigate("QuestionsPage")}
+        onPress={() => navigation.navigate("QuestionsPage" as never)}
       >
         <Text style={globalStyles.buttonText}>Start quiz</Text>
       </Pressable>

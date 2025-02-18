@@ -22,4 +22,10 @@ export const globalStyles = StyleSheet.create({
     color: "#fff",
     fontWeight: "bold",
   },
+  quizAnswerButton: {
+    padding: 20,
+    borderColor: "#423957",
+    borderRadius: 10,
+    minWidth: "100%",
+  },
 });
