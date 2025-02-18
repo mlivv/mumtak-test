@@ -16,18 +16,20 @@ export default function ResponsesDisplayWrapper({
         style={styles.container}
         contentContainerStyle={styles.contentContainer}
       >
-        {responses.map((response, index) => (
-          <View
-            key={index}
-            style={{
-              borderBottomWidth: responses.length - 1 === index ? 0 : 1,
-              borderBottomColor: "#fff",
-              paddingVertical: 5,
-            }}
-          >
-            <ResponseDetails response={response} />
-          </View>
-        ))}
+        {responses
+          .sort((a, b) => a.selectedAnswer.localeCompare(b.selectedAnswer))
+          .map((response, index) => (
+            <View
+              key={index}
+              style={{
+                borderBottomWidth: responses.length - 1 === index ? 0 : 1,
+                borderBottomColor: "#fff",
+                paddingVertical: 5,
+              }}
+            >
+              <ResponseDetails response={response} />
+            </View>
+          ))}
       </ScrollView>
     </View>
   );
@@ -36,7 +38,7 @@ export default function ResponsesDisplayWrapper({
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
-    maxHeight: "60%",
+    maxHeight: "50%",
   },
   container: {
     backgroundColor: "#332C44",

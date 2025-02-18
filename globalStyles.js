@@ -28,4 +28,9 @@ export const globalStyles = StyleSheet.create({
     borderRadius: 10,
     minWidth: "100%",
   },
+  image: {
+    width: 180,
+    height: 180,
+    alignSelf: "center",
+  },
 });

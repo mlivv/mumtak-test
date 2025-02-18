@@ -1,17 +1,16 @@
-import { useContext, useEffect } from "react";
-import { Text, View } from "react-native";
-import { UserResponsesContext } from "../components/context/userResponsesContext/userResponsesContext";
+import { useContext } from "react";
+import { View } from "react-native";
 import { globalStyles } from "../../globalStyles";
+import { UserResponsesContext } from "../components/context/userResponsesContext/userResponsesContext";
 import ResponsesDisplayWrapper from "../components/resultsScreen/responsesDisplayWrapper";
-import UserScore from "../components/resultsScreen/userScore";
+import UserScoreMessage from "../components/resultsScreen/userScoreMessage";
 
 export default function ResultsPage() {
   const { userResponses } = useContext(UserResponsesContext);
 
   return (
     <View style={globalStyles.container}>
-      {/* <Text style={globalStyles.text}>Results Page</Text> */}
-      <UserScore responses={userResponses} />
+      <UserScoreMessage responses={userResponses} />
       <ResponsesDisplayWrapper responses={userResponses} />
     </View>
   );
