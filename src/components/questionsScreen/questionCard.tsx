@@ -2,6 +2,8 @@ import { decode } from "html-entities";
 import { StyleSheet, Text, View } from "react-native";
 import { globalStyles } from "../../../globalStyles";
 import AnswersWrapper from "./answersWrapper";
+import { QuizQuestion } from "../../models/quizQuestion";
+import { QuizResponse } from "../../models/quizResponse";
 
 interface QuestionCardProps {
   currentQuestion: QuizQuestion;
@@ -22,6 +24,7 @@ export default function QuestionCard({
       question: currentQuestion.question,
       selectedAnswer: answer,
       correctAnswer: currentQuestion.correct_answer,
+      difficulty: currentQuestion.difficulty,
     });
   }
 

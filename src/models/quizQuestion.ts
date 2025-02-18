@@ -1,6 +1,6 @@
-type difficulty = "easy" | "medium" | "hard";
+export type difficulty = "easy" | "medium" | "hard";
 
-interface QuizQuestion {
+export interface QuizQuestion {
   type: string;
   difficulty: difficulty;
   category: string;

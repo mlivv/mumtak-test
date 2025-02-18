@@ -1,11 +1,12 @@
-import { useNavigation } from "@react-navigation/native";
-import { useEffect, useState } from "react";
+import { StackActions, useNavigation } from "@react-navigation/native";
+import { useContext, useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { globalStyles } from "../../../globalStyles";
 import { questionsFetch as getQuestions } from "../api/questions/questionsFetch";
 import NextQuestionButton from "./nextQuestionButton";
 import QuestionCard from "./questionCard";
 import QuestionCount from "./questionCount";
+import { UserResponsesContext } from "../context/userResponsesContext/userResponsesContext";
 
 interface QuestionWrapperProps {
   questionIndex: number;
@@ -24,13 +25,16 @@ export default function QuestionsWrapper({
 
   const [currentResponse, setCurrentResponse] = useState<QuizResponse>();
   const [quizResponses, setQuizResponses] = useState<QuizResponse[]>([]);
+  const { userResponses, setUserResponses } = useContext(UserResponsesContext);
 
   useEffect(() => {
     setCurrentResponse(undefined);
   }, [questionIndex]);
 
   function handleQuizResponse(quizAnswer: QuizResponse) {
+    //  TODO elimina quizresponses
     setQuizResponses([...quizResponses, quizAnswer]);
+    setUserResponses([...quizResponses, quizAnswer]);
   }
 
   useEffect(() => {
@@ -57,7 +61,7 @@ export default function QuestionsWrapper({
   }
 
   if (questionIndex === questions.length) {
-    navigation.navigate("ResultsPage" as never);
+    navigation.dispatch(StackActions.replace("ResultsPage"));
     return null;
   }
 
