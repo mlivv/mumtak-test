@@ -49,9 +49,6 @@ export default function QuestionsWrapper({
   // the property "selectedAnswer" will have "null" as a value
   useEffect(() => {
     if (hasTimerEnded && quizResponses.length === questionIndex) {
-      console.log(quizResponses);
-      console.log("question index: " + questionIndex);
-      console.log("has timer ended " + hasTimerEnded);
       handleQuizResponse(questions[questionIndex]);
     }
   }, [hasTimerEnded, questionIndex]);
