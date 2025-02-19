@@ -15,10 +15,11 @@ L'app è suddivisa in 3 pagine diverse:
 Requisiti necessari per avviare l'applicazione:
 -Android Studio
 
-Step 1 - Aprire Android Studio e creare un nuovo dispositivo virtuale. Prestare particolare attenzione all'immagine di sistema, che deve essere "UpsideDownCake" (API 34).
-Step 2 - Avviare il dispositivo virtuale.
-Step 3 - Avviare l'applicazione con il comando $ npx expo start --clear
-Step 4 - Attendere che l'app si connetta al dispositivo, quindi premere "a" nel terminale per collegarlo.
+Step 1 - Aprire il terminale e installare le dependencies con $ npm install
+Step 2 - Aprire Android Studio e creare un nuovo dispositivo virtuale. Prestare particolare attenzione all'immagine di sistema, che deve essere "UpsideDownCake" (API 34).
+Step 3 - Avviare il dispositivo virtuale.
+Step 4 - Avviare l'applicazione con il comando $ npx expo start --clear
+Step 5 - Attendere che l'app si connetta al dispositivo, quindi premere "a" nel terminale per collegarlo.
 
 ## Tecnologie utilizzate
 
