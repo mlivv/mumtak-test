@@ -1,12 +1,12 @@
-import { Pressable, StyleSheet, Text } from "react-native";
-import { globalStyles } from "../../../globalStyles";
 import { StackActions, useNavigation } from "@react-navigation/core";
 import { useContext } from "react";
+import { Pressable, StyleSheet, Text } from "react-native";
+import { globalStyles } from "../../../globalStyles";
 import { UserResponsesContext } from "../context/userResponsesContext/userResponsesContext";
 
 export default function HomeButton() {
   const navigation = useNavigation();
-  const { userResponses, setUserResponses } = useContext(UserResponsesContext);
+  const { setUserResponses } = useContext(UserResponsesContext);
 
   return (
     <Pressable

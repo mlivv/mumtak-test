@@ -1,8 +1,9 @@
 import { Ionicons } from "@expo/vector-icons";
 import { decode } from "html-entities";
 import { StyleSheet, Text, View } from "react-native";
-import AnswerResult from "./answerResult";
 import { QuizResponse } from "../../models/quizResponse";
+import CorrectAnswerText from "./correctAnswerText";
+import WrongAnswerText from "./wrongAnswerText";
 
 interface ResponseDetailsProps {
   response: QuizResponse;
@@ -16,20 +17,11 @@ export default function ResponseDetails({ response }: ResponseDetailsProps) {
       <View style={styles.textContainer}>
         <Text style={styles.text}>{decode(response.question)}</Text>
         {isResponseCorrect ? (
-          <AnswerResult
-            correctAnswer={isResponseCorrect}
-            answer={response.selectedAnswer}
-          />
+          <CorrectAnswerText answer={response.correctAnswer} />
         ) : (
           <View>
-            <AnswerResult
-              correctAnswer={isResponseCorrect}
-              answer={response.correctAnswer}
-            />
-            <AnswerResult
-              answer={response.selectedAnswer}
-              correctAnswer={true}
-            />
+            <WrongAnswerText answer={response.selectedAnswer} />
+            <CorrectAnswerText answer={response.correctAnswer} />
           </View>
         )}
       </View>
