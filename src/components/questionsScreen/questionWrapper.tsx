@@ -1,8 +1,10 @@
-import { useNavigation } from "@react-navigation/native";
-import { useEffect, useState } from "react";
+import { StackActions, useNavigation } from "@react-navigation/native";
+import { useContext, useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { globalStyles } from "../../../globalStyles";
+import { QuizResponse } from "../../models/quizResponse";
 import { questionsFetch as getQuestions } from "../api/questions/questionsFetch";
+import { UserResponsesContext } from "../context/userResponsesContext/userResponsesContext";
 import NextQuestionButton from "./nextQuestionButton";
 import QuestionCard from "./questionCard";
 import QuestionCount from "./questionCount";
@@ -20,18 +22,36 @@ export default function QuestionsWrapper({
 }: QuestionWrapperProps) {
   const navigation = useNavigation();
   const [questions, setQuestions] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<boolean>(false);
 
   const [currentResponse, setCurrentResponse] = useState<QuizResponse>();
   const [quizResponses, setQuizResponses] = useState<QuizResponse[]>([]);
+  const { userResponses, setUserResponses } = useContext(UserResponsesContext);
 
   useEffect(() => {
     setCurrentResponse(undefined);
   }, [questionIndex]);
 
   function handleQuizResponse(quizAnswer: QuizResponse) {
-    setQuizResponses([...quizResponses, quizAnswer]);
+    const updatedAnswer = hasTimerEnded
+      ? {
+          ...quizAnswer,
+          selectedAnswer: null,
+        }
+      : quizAnswer;
+
+    setQuizResponses([...quizResponses, updatedAnswer]);
+    setUserResponses([...userResponses, updatedAnswer]);
   }
+
+  // if timer has ended and the user didn't select a question,
+  // the property "selectedAnswer" will have "null" as a value
+  useEffect(() => {
+    if (hasTimerEnded && quizResponses.length === questionIndex) {
+      handleQuizResponse(questions[questionIndex]);
+    }
+  }, [hasTimerEnded, questionIndex]);
 
   useEffect(() => {
     async function fetchData() {
@@ -42,6 +62,7 @@ export default function QuestionsWrapper({
       } catch (error) {
         console.error(error);
         setLoading(false);
+        setError(true);
       }
     }
 
@@ -57,7 +78,7 @@ export default function QuestionsWrapper({
   }
 
   if (questionIndex === questions.length) {
-    navigation.navigate("ResultsPage" as never);
+    navigation.dispatch(StackActions.replace("ResultsPage"));
     return null;
   }
 
@@ -70,7 +91,6 @@ export default function QuestionsWrapper({
       <QuestionCard
         currentQuestion={questions[questionIndex]}
         setCurrentResponse={setCurrentResponse}
-        hasTimerEnded={hasTimerEnded}
         currentResponse={currentResponse}
       />
       <NextQuestionButton

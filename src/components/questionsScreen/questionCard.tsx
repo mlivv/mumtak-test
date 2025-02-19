@@ -1,27 +1,27 @@
 import { decode } from "html-entities";
 import { StyleSheet, Text, View } from "react-native";
 import { globalStyles } from "../../../globalStyles";
+import { QuizQuestion } from "../../models/quizQuestion";
+import { QuizResponse } from "../../models/quizResponse";
 import AnswersWrapper from "./answersWrapper";
 
 interface QuestionCardProps {
   currentQuestion: QuizQuestion;
   setCurrentResponse: React.Dispatch<React.SetStateAction<QuizResponse>>;
-  hasTimerEnded: boolean;
   currentResponse: QuizResponse;
 }
 
 export default function QuestionCard({
   currentQuestion,
   setCurrentResponse,
-  hasTimerEnded,
   currentResponse,
 }: QuestionCardProps) {
   function handleAnswerSelection(value: string) {
-    const answer = hasTimerEnded ? null : value;
     setCurrentResponse({
       question: currentQuestion.question,
-      selectedAnswer: answer,
+      selectedAnswer: value,
       correctAnswer: currentQuestion.correct_answer,
+      difficulty: currentQuestion.difficulty,
     });
   }
 
