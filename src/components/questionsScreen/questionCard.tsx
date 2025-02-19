@@ -8,18 +8,15 @@ import AnswersWrapper from "./answersWrapper";
 interface QuestionCardProps {
   currentQuestion: QuizQuestion;
   setCurrentResponse: React.Dispatch<React.SetStateAction<QuizResponse>>;
-  hasTimerEnded: boolean;
   currentResponse: QuizResponse;
 }
 
 export default function QuestionCard({
   currentQuestion,
   setCurrentResponse,
-  hasTimerEnded,
   currentResponse,
 }: QuestionCardProps) {
   function handleAnswerSelection(value: string) {
-    // const answer = hasTimerEnded ? null : value;
     setCurrentResponse({
       question: currentQuestion.question,
       selectedAnswer: value,

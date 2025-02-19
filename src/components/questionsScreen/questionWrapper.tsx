@@ -22,11 +22,12 @@ export default function QuestionsWrapper({
 }: QuestionWrapperProps) {
   const navigation = useNavigation();
   const [questions, setQuestions] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<boolean>(false);
 
   const [currentResponse, setCurrentResponse] = useState<QuizResponse>();
   const [quizResponses, setQuizResponses] = useState<QuizResponse[]>([]);
-  const { setUserResponses } = useContext(UserResponsesContext);
+  const { userResponses, setUserResponses } = useContext(UserResponsesContext);
 
   useEffect(() => {
     setCurrentResponse(undefined);
@@ -41,17 +42,19 @@ export default function QuestionsWrapper({
       : quizAnswer;
 
     setQuizResponses([...quizResponses, updatedAnswer]);
-    setUserResponses([...quizResponses, updatedAnswer]);
+    setUserResponses([...userResponses, updatedAnswer]);
   }
 
-  // if timer has ended and the user didn't select a question, the property "selectedAnswer" will have "null" as a value
+  // if timer has ended and the user didn't select a question,
+  // the property "selectedAnswer" will have "null" as a value
   useEffect(() => {
-    console.log(quizResponses);
-    console.log("has timer ended " + hasTimerEnded);
-    if (hasTimerEnded) {
+    if (hasTimerEnded && quizResponses.length === questionIndex) {
+      console.log(quizResponses);
+      console.log("question index: " + questionIndex);
+      console.log("has timer ended " + hasTimerEnded);
       handleQuizResponse(questions[questionIndex]);
     }
-  }, [hasTimerEnded, quizResponses]);
+  }, [hasTimerEnded, questionIndex]);
 
   useEffect(() => {
     async function fetchData() {
@@ -62,6 +65,7 @@ export default function QuestionsWrapper({
       } catch (error) {
         console.error(error);
         setLoading(false);
+        setError(true);
       }
     }
 
@@ -76,7 +80,7 @@ export default function QuestionsWrapper({
     );
   }
 
-if (questionIndex === questions.length) {
+  if (questionIndex === questions.length) {
     navigation.dispatch(StackActions.replace("ResultsPage"));
     return null;
   }
@@ -90,7 +94,6 @@ if (questionIndex === questions.length) {
       <QuestionCard
         currentQuestion={questions[questionIndex]}
         setCurrentResponse={setCurrentResponse}
-        hasTimerEnded={hasTimerEnded}
         currentResponse={currentResponse}
       />
       <NextQuestionButton
