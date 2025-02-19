@@ -22,7 +22,9 @@ export default function Timer({
   useEffect(() => {
     if (timer === 0) {
       setHasTimerEnded(true);
-      moveToNextQuestion();
+      setTimeout(() => {
+        moveToNextQuestion();
+      }, 1000);
       return;
     }
 

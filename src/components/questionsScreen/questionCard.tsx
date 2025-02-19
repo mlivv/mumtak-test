@@ -1,9 +1,9 @@
 import { decode } from "html-entities";
 import { StyleSheet, Text, View } from "react-native";
 import { globalStyles } from "../../../globalStyles";
-import AnswersWrapper from "./answersWrapper";
 import { QuizQuestion } from "../../models/quizQuestion";
 import { QuizResponse } from "../../models/quizResponse";
+import AnswersWrapper from "./answersWrapper";
 
 interface QuestionCardProps {
   currentQuestion: QuizQuestion;
@@ -19,10 +19,10 @@ export default function QuestionCard({
   currentResponse,
 }: QuestionCardProps) {
   function handleAnswerSelection(value: string) {
-    const answer = hasTimerEnded ? null : value;
+    // const answer = hasTimerEnded ? null : value;
     setCurrentResponse({
       question: currentQuestion.question,
-      selectedAnswer: answer,
+      selectedAnswer: value,
       correctAnswer: currentQuestion.correct_answer,
       difficulty: currentQuestion.difficulty,
     });

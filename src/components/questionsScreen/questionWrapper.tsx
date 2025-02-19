@@ -33,9 +33,25 @@ export default function QuestionsWrapper({
   }, [questionIndex]);
 
   function handleQuizResponse(quizAnswer: QuizResponse) {
-    setQuizResponses([...quizResponses, quizAnswer]);
-    setUserResponses([...quizResponses, quizAnswer]);
+    const updatedAnswer = hasTimerEnded
+      ? {
+          ...quizAnswer,
+          selectedAnswer: null,
+        }
+      : quizAnswer;
+
+    setQuizResponses([...quizResponses, updatedAnswer]);
+    setUserResponses([...quizResponses, updatedAnswer]);
   }
+
+  // if timer has ended and the user didn't select a question, the property "selectedAnswer" will have "null" as a value
+  useEffect(() => {
+    console.log(quizResponses);
+    console.log("has timer ended " + hasTimerEnded);
+    if (hasTimerEnded) {
+      handleQuizResponse(questions[questionIndex]);
+    }
+  }, [hasTimerEnded, quizResponses]);
 
   useEffect(() => {
     async function fetchData() {
@@ -60,7 +76,7 @@ export default function QuestionsWrapper({
     );
   }
 
-  if (questionIndex === questions.length) {
+if (questionIndex === questions.length) {
     navigation.dispatch(StackActions.replace("ResultsPage"));
     return null;
   }
